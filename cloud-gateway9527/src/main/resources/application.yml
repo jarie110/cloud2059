@@ -1,0 +1,27 @@
+server:
+  port: 9527
+spring:
+  application:
+    name: cloud-gateWay9527
+  cloud:
+    gateway:
+     routes:
+      - id: payment_rout
+        uri: lb://CLOUD-PAYMENT-SERVICE #lb指协议为负载均衡
+        predicates:
+         - Path=/payment/get/**
+     discovery:
+       locator:
+         enabled: true #开启由微服务名称负载均衡路由
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    hostname: cloud-gateway-service
+    prefer-ip-address: true
+    ip-address: 127.0.0.1 #显示的是本主机ip，而不是真实的网络主机ip
+    instance-id: gateway-instance #模块的包名（文件夹名称）
